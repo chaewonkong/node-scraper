@@ -3,7 +3,7 @@
  */
 import * as cheerio from "cheerio";
 
-class Scrape {
+export class Scrape {
   html: string;
 
   constructor(html: string) {
@@ -12,9 +12,10 @@ class Scrape {
 
   scrapeSiteMeta() {
     const $ = cheerio.load(this.html);
-    const title = $("title");
-    const metatags = $("meta");
-
-    return { title, metatags };
+    const title = $("title").text();
+    const description = $(`meta[property="description"]`).attr("content");
+    const image = $(`meta[property="og:image"]`).attr("content");
+    const keywords = $(`meta[property="keywords"]`).attr("content")?.split(",");
+    return { title, description, image, keywords };
   }
 }

@@ -23,6 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Scrape = void 0;
 /**
  * Scraper
  */
@@ -32,9 +33,13 @@ class Scrape {
         this.html = html;
     }
     scrapeSiteMeta() {
+        var _a;
         const $ = cheerio.load(this.html);
-        const title = $("title");
-        const metatags = $("meta");
-        return { title, metatags };
+        const title = $("title").text();
+        const description = $(`meta[property="description"]`).attr("content");
+        const image = $(`meta[property="og:image"]`).attr("content");
+        const keywords = (_a = $(`meta[property="keywords"]`).attr("content")) === null || _a === void 0 ? void 0 : _a.split(",");
+        return { title, description, image, keywords };
     }
 }
+exports.Scrape = Scrape;

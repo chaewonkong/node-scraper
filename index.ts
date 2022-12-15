@@ -1,5 +1,6 @@
 import fastify from "fastify";
 import axios from "axios";
+import { Scrape } from "./scraping";
 
 const server = fastify();
 
@@ -9,10 +10,16 @@ server.get("/ping", async (req, res) => {
 
 server.get("/test", async (req, res) => {
   try {
-    const result = await axios.get("http://naver.com");
-    console.log(result.data);
+    const result = await axios.get(
+      "https://leonkong.cc/14e9eb7b-add7-5809-a608-82fe32a37730",
+      {
+        headers: { "Accept-Encoding": "gzip,deflate,compress" },
+      }
+    );
+    const scrape = new Scrape(result.data);
+    console.log(scrape.scrapeSiteMeta());
   } catch (e) {
-    console.log(e);
+    console.warn(e);
   }
 });
 
